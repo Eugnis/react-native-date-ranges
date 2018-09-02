@@ -122,7 +122,8 @@ export default class ComposePicker extends Component {
         <Modal 
           animationType="slide"
           transparent={false}
-          visible={this.state.modalVisible}>
+          visible={this.state.modalVisible}
+          onRequestClose={()=>{}}>
           <View stlye={{flex:1, flexDirection:'column'}}>
             <View style={{height:'90%'}}>
             <DateRange
