@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -55,7 +55,7 @@ const styles = {
   }
 }
 
-export default class Week extends Component{
+export default class Week extends PureComponent{
   
   render(){
     const {

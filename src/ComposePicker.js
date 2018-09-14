@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, TouchableHighlight, Modal, Text } from 'react-native';
 import DateRange from './DateRange';
 import moment from 'moment'; 
@@ -24,7 +24,7 @@ const styles = {
   }
 
 }
-export default class ComposePicker extends Component {
+export default class ComposePicker extends PureComponent {
   constructor(props){
     super(props);
     this.state={
@@ -39,6 +39,11 @@ export default class ComposePicker extends Component {
       currentDate: moment(),
     }
   }
+  cancelSelection = () => {
+    this.setState({startDate:null, endDate:null, showContent: false});
+    this.props.onConfirm({startDate: this.props.startDate, endDate: this.props.endDate});
+  }
+
   isDateBlocked = ( date ) => {
     if ( this.props.blockBefore ){
       return date.isBefore(moment(), 'day');
@@ -82,7 +87,7 @@ export default class ComposePicker extends Component {
       }
     }
     else {
-      alert('please select correct date');
+      alert(this.props.errorMessage || 'please select correct date');
     }
     
   }
@@ -123,13 +128,15 @@ export default class ComposePicker extends Component {
           animationType="slide"
           transparent={false}
           visible={this.state.modalVisible}
-          onRequestClose={()=>{}}>
-          <View stlye={{flex:1, flexDirection:'column'}}>
+          onRequestClose={()=>{this.setModalVisible(false); this.cancelSelection();}}>
+          <View style={{flex:1, flexDirection:'column'}}>
             <View style={{height:'90%'}}>
             <DateRange
               headFormat={this.props.headFormat}
               customStyles={customStyles}
               markText={this.props.markText}
+              clearStart={this.props.clearStart}
+              clearEnd={this.props.clearEnd}
               onDatesChange={this.onDatesChange}
               isDateBlocked={this.isDateBlocked}
               startDate={this.state.startDate}
@@ -150,9 +157,21 @@ export default class ComposePicker extends Component {
                   <TouchableHighlight
                   underlayColor={'transparent'}
                   onPress={this.onConfirm}
-                  style={[{ width: '80%', marginHorizontal: '3%' }, this.props.ButtonStyle]}
+                  style={[{ width: '50%', marginStart: '3%' }, this.props.ButtonStyle]}
                   >
                   <Text style={[{ fontSize:20 }, this.props.ButtonTextStyle]}>{this.props.ButtonText? this.props.ButtonText: "送出"}</Text>
+                  </TouchableHighlight>
+                }
+                {this.props.customCancelButton
+                  ?
+                  this.props.customCancelButton
+                  :          
+                  <TouchableHighlight
+                  underlayColor={'transparent'}
+                  onPress={()=>{this.setModalVisible(false); this.cancelSelection();}}
+                  style={[{ width: '50%', marginEnd: '3%' }, this.props.ButtonStyle]}
+                  >
+                  <Text style={[{ fontSize:20 }, this.props.ButtonTextStyle]}>{this.props.CancelButtonText? this.props.CancelButtonText: "送出"}</Text>
                   </TouchableHighlight>
                 }
             </View>

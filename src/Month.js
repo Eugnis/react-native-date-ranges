@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -20,7 +20,7 @@ const styles = {
     fontWeight:'bold'
   },
 }
-export default class Month extends Component{
+export default class Month extends PureComponent{
   render(){
     const {
       mode,

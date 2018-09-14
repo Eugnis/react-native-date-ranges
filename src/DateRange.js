@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   Text,
   View,
@@ -49,7 +49,7 @@ const max = 2100;
 const interval = (max - min) + 1;
 const rangeArray = Array.from(new Array(interval),(val,index)=>index+min);
 
-export default class DateRange extends Component {
+export default class DateRange extends PureComponent {
   constructor(props){
     super(props);
     const defalutFormat = (!props.mode || props.mode === 'single') ? 'ddd, MMM D' : 'MMM DD,YYYY';
